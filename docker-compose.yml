@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  polkadot:
+    container_name: polkadotdev
+    image: parity/polkadot:latest
+    ports:
+          #- 30333:30333 # p2p port
+          - 9933:9933 # rpc port
+          - 9944:9944 # ws port
+    command: [
+        "--dev",
+        "--name", "polkadotdevnode",
+        "--ws-external",
+        "--rpc-external",
+        "--rpc-cors", "all"
+    ]
+  sidecar:
+    container_name: sidecardev
+    image: parity/substrate-api-sidecar:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SAS_SUBSTRATE_WS_URL: ws://polkadot:9944
